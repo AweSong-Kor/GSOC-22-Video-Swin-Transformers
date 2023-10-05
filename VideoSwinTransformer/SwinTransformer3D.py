@@ -27,7 +27,8 @@ class SwinTransformer3D(tf.keras.Model):
                  norm_layer= LayerNormalization,
                  patch_norm=False,
                  frozen_stages=-1,
-                 use_checkpoint=False):    ## ****** remove it later
+                 use_checkpoint=False,
+                 isTest=False):    ## ****** remove it later
       
         super().__init__()
 
