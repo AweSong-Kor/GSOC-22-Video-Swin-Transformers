@@ -27,8 +27,7 @@ class SwinTransformer3D(tf.keras.Model):
                  norm_layer= LayerNormalization,
                  patch_norm=False,
                  frozen_stages=-1,
-                 use_checkpoint=False,
-                 isTest =False):    ## ****** remove it later
+                 use_checkpoint=False):    ## ****** remove it later
       
         super().__init__()
 
@@ -112,11 +111,7 @@ class SwinTransformer3D(tf.keras.Model):
         x = self.norm(x)
         x = tf.transpose(x, perm=[0, 4, 1, 2,3 ])
         
-
-        if self.isTest:                 # remove later
-            return layer_out, x
-        else:
-            return x
+        return x
 
     def build_graph(self):
         x = tf.keras.Input(shape=(3,8,224,224))
