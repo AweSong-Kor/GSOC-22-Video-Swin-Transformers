@@ -66,7 +66,7 @@ class WindowAttention3D(tf.keras.layers.Layer):
             tf.print("[*]num_heads:", self.num_heads) # remove later
             tf.print("[*]N:", N) # remove later
             tf.print("[*]N:", N) # remove later
-            attn = tf.reshape(attn, shape=[-1, nW, self.num_heads*2, N, N]) + tf.cast(
+            attn = tf.reshape(attn, shape=[-1, nW, self.num_heads//2, N, N]) + tf.cast(
                 tf.expand_dims(tf.expand_dims(mask, axis=1), axis=0), attn.dtype)
 
             attn = tf.reshape(attn, shape=[-1, self.num_heads, N, N])
