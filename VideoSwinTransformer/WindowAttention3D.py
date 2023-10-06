@@ -61,6 +61,11 @@ class WindowAttention3D(tf.keras.layers.Layer):
         if mask is not None:
 
             nW = tf.shape(mask)[0]  # tf.shape(mask)[0]
+            tf.print("before reshape\n[*] attn:", attn) # remove later
+            tf.print("[*]nW:", nW) # remove later
+            tf.print("[*]num_heads:", self.num_heads) # remove later
+            tf.print("[*]N:", N) # remove later
+            tf.print("[*]N:", N) # remove later
             attn = tf.reshape(attn, shape=[-1, nW, self.num_heads, N, N]) + tf.cast(
                 tf.expand_dims(tf.expand_dims(mask, axis=1), axis=0), attn.dtype)
 
