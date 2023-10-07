@@ -93,7 +93,7 @@ class BasicLayer(tf.keras.Model):
         Wp = int(tf.math.ceil(W / mask_window_size[2])) * mask_window_size[2]
         self.attn_mask = compute_mask(Dp, Hp, Wp, mask_window_size, mask_shift_size)
 
-        tf.print('nW:',self.attn_mask.shape[0]) # remove
+        #tf.print('nW:',self.attn_mask.shape[0]) # remove this, called 4 times, outputs were 512, 128, 32, 8
 
         # build 
         self.blocks = [
