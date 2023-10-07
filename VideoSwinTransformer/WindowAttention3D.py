@@ -46,8 +46,9 @@ class WindowAttention3D(tf.keras.layers.Layer):
 
     def call(self, x, mask=None):
         B_, N, C = tf.shape(x)[0], tf.shape(x)[1], tf.shape(x)[2]
+        # changed shape=[-1, N, 3, ...] to shape=[B_, N, 3, ...]
         qkv = tf.transpose(tf.reshape(self.qkv(
-            x), shape=[-1, N, 3, self.num_heads, C // self.num_heads]), perm=[2, 0, 3, 1, 4])
+            x), shape=[B_, N, 3, self.num_heads, C // self.num_heads]), perm=[2, 0, 3, 1, 4])
         q, k, v = qkv[0], qkv[1], qkv[2]
 
         q = q * self.scale
@@ -62,7 +63,8 @@ class WindowAttention3D(tf.keras.layers.Layer):
 
             nW = tf.shape(mask)[0]  # tf.shape(mask)[0]
             # shape of reshape should be [BATCH//nW, nW, self.num_heads, N, N]
-            attn = tf.reshape(attn, shape=[-1, nW, self.num_heads, N, N]) + tf.cast(
+            # changed shape=[-1, nW, ...] to shape=[B_//nW, nW, ...]
+            attn = tf.reshape(attn, shape=[B_//nW, nW, self.num_heads, N, N]) + tf.cast(
                 tf.expand_dims(tf.expand_dims(mask, axis=1), axis=0), attn.dtype)
 
             attn = tf.reshape(attn, shape=[-1, self.num_heads, N, N])
@@ -73,7 +75,8 @@ class WindowAttention3D(tf.keras.layers.Layer):
         attn = self.attn_drop(attn)
 
         x = tf.transpose((attn @ v), perm=[0, 2, 1, 3])
-        x = tf.reshape(x, shape=[-1, N, C])
+        # changed shape=[-1, N, C] to shape=[B_, N, C]
+        x = tf.reshape(x, shape=[B_, N, C])
         x = self.proj(x)
         x = self.proj_drop(x)
         return x
