@@ -63,10 +63,7 @@ class WindowAttention3D(tf.keras.layers.Layer):
 
             nW = tf.shape(mask)[0]  # tf.shape(mask)[0]
             # shape of reshape should be [BATCH//nW, nW, self.num_heads, N, N]
-            # changed shape=[-1, nW, ...] to shape=[B_//nW, nW, ...]
-            tf.print("[before reshape] shape of attn ", tf.shape(attn))
-            tf.print("[to reshape] B_: {}, nW: {}".format(B_, nW))
-            
+            # changed shape=[-1, nW, ...] to shape=[B_//nW, nW, ...]            
             attn = tf.reshape(attn, shape=[1 if B_//nW == 0 else B_//nW,
                                            nW, self.num_heads, N, N]) + tf.cast(
                 tf.expand_dims(tf.expand_dims(mask, axis=1), axis=0), attn.dtype)
